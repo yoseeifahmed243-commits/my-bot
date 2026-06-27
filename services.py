@@ -1,9 +1,8 @@
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-def countries_menu(service):
-    markup = InlineKeyboardMarkup(row_width=2)
+COUNTRIES = {
 
-    countries = [
+    "telegram": [
         ("🇺🇿 Uzbekistan - 25.5₽", "uzbekistan"),
         ("🇧🇩 Bangladesh - 12₽", "bangladesh"),
         ("🇸🇦 Saudi Arabia - 43.5₽", "saudi"),
@@ -22,9 +21,40 @@ def countries_menu(service):
         ("🇻🇪 Venezuela - 36.5₽", "venezuela"),
         ("🇨🇴 Colombia - 12₽", "colombia"),
         ("🇿🇼 Zimbabwe - 13₽", "zimbabwe"),
-    ]
+    ],
 
-    for text, code in countries:
+    "whatsapp": [
+        ("🇵🇭 Philippines - 10₽", "philippines"),
+        ("🇻🇳 Vietnam - 10₽", "vietnam"),
+        ("🇮🇩 Indonesia - 10₽", "indonesia"),
+        ("🇹🇭 Thailand - 10₽", "thailand"),
+        ("🇨🇦 Canada - 10₽", "canada"),
+        ("🇪🇬 Egypt - 10₽", "egypt"),
+        ("🇿🇦 South Africa - 10₽", "southafrica"),
+        ("🇲🇦 Morocco - 13₽", "morocco"),
+        ("🇱🇾 Libya - 10₽", "libya"),
+        ("🇫🇷 France - 10₽", "france"),
+        ("🇸🇦 Saudi Arabia - 18₽", "saudi"),
+        ("🇬🇧 United Kingdom - 10₽", "uk"),
+        ("🇹🇷 Turkey - 10₽", "turkey"),
+        ("🇮🇶 Iraq - 10₽", "iraq"),
+    ],
+
+    "instagram": [],
+    "tiktok": [],
+    "google": [],
+    "apple": [],
+    "paypal": []
+
+}
+
+
+def countries_menu(service):
+
+    markup = InlineKeyboardMarkup(row_width=2)
+
+    for text, code in COUNTRIES.get(service, []):
+
         markup.add(
             InlineKeyboardButton(
                 text,
