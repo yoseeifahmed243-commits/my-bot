@@ -75,18 +75,56 @@ def callbacks(call):
         )
 
     elif call.data.startswith("buy_"):
-        _, service, country = call.data.split("_", 2)
 
-        bot.answer_callback_query(call.id)
+    country = call.data.replace("buy_", "")
 
-        bot.send_message(
-            call.message.chat.id,
-            f"""✅ الخدمة: {service}
+    prices = {
+        "uzbekistan": 25.5,
+        "bangladesh": 12,
+        "saudi": 43.5,
+        "italy": 36.5,
+        "mexico": 22,
+        "kazakhstan": 33,
+        "yemen": 20,
+        "latvia": 51,
+        "portugal": 65.5,
+        "kyrgyzstan": 43.5,
+        "tajikistan": 25.5,
+        "usa": 13,
+        "egypt": 16.5,
+        "iraq": 65.5,
+        "turkey": 36.5,
+        "venezuela": 36.5,
+        "colombia": 12,
+        "zimbabwe": 13
+    }
+
+    rub_price = prices[country]
+    final_price = round(rub_price * 1.30, 2)
+
+    markup = InlineKeyboardMarkup()
+    markup.add(
+        InlineKeyboardButton(
+            f"🛒 شراء مقابل {final_price} ₽",
+            callback_data=f"confirm_{country}"
+        )
+    )
+    markup.add(
+        InlineKeyboardButton("⬅️ رجوع", callback_data="sms_telegram")
+    )
+
+    bot.edit_message_text(
+        f"""📲 Telegram
 
 🌍 الدولة: {country}
 
-⏳ جاري شراء الرقم..."""
-        )
+💰 السعر: {final_price} ₽
+
+اضغط شراء لإكمال الطلب.""",
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup
+    )
 
     elif call.data == "smm":
         bot.answer_callback_query(call.id)
