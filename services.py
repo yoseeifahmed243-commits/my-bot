@@ -41,13 +41,9 @@ COUNTRIES = {
     ],
 
     "instagram": [],
-    "tiktok": [],
-    "google": [],
-    "apple": [],
-    "paypal": []
+    "tiktok": []
 
 }
-
 
 def countries_menu(service):
 
@@ -63,10 +59,7 @@ def countries_menu(service):
         )
 
     markup.add(
-        InlineKeyboardButton(
-            "⬅️ رجوع",
-            callback_data="sms"
-        )
+        InlineKeyboardButton("⬅️ رجوع", callback_data="sms")
     )
 
     return markup
