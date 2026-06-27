@@ -1,5 +1,6 @@
 import telebot
 from sms import sms_menu
+from services import countries_menu
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import TOKEN, BOT_NAME, SUPPORT
 import database
@@ -55,10 +56,19 @@ def callbacks(call):
     if call.data == "sms":
 
     bot.edit_message_text(
-        "📱 اختر الخدمة المطلوبة",
+        "📱 اختر الخدمة",
         call.message.chat.id,
         call.message.message_id,
         reply_markup=sms_menu()
+    )
+
+elif call.data == "sms_telegram":
+
+    bot.edit_message_text(
+        "📲 اختر دولة رقم تيليجرام",
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=countries_menu()
     )
     elif call.data == "smm":
         bot.answer_callback_query(call.id)
