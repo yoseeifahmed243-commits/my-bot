@@ -40,8 +40,7 @@ COUNTRIES = {
         ("🇮🇶 Iraq - 10₽", "iraq"),
     ],
 
-    "instagram": [],
-    "tiktok": []
+    
 
 }
 
