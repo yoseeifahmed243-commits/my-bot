@@ -265,13 +265,19 @@ elif call.data.startswith("pay_"):
     method = call.data.replace("pay_", "")
 
     addresses = {
-        "ton": "UQBEEjOPxeZK8DyVwkAVQznE1FrMi0EbxxJSia7MhS4H1Co7",
-        "trc20": "TRHUB8kuMpdCoDzST6c4AJ4cJdk6tToz97",
-        "erc20": "0x8D7dDE7719e9d6D3e5175CE170Fae00372715493",
-        "bep20": "0xA7fE0a5Ae6Adcd5b47df238F836449b4d0866155",
-        "polygon": "0xA7fE0a5Ae6Adcd5b47df238F836449b4d0866155",
-        "faucetpay": "telegramsms71@gmail.com",
-        "cwallet": "61824874"
+        # طرق الدفع
+elif call.data.startswith("pay_"):
+
+    method = call.data.replace("pay_", "")
+
+    addresses = {
+        "ton": TON_ADDRESS,
+        "trc20": TRC20_ADDRESS,
+        "erc20": ERC20_ADDRESS,
+        "bep20": BEP20_ADDRESS,
+        "polygon": POLYGON_ADDRESS,
+        "faucetpay": FAUCETPAY,
+        "cwallet": CWALLET
     }
 
     address = addresses.get(method, "غير متوفر")
@@ -288,8 +294,7 @@ elif call.data.startswith("pay_"):
 
 مثال:
 20 USDT"""
-    )
-    # طلبات الأدمن
+    )    # طلبات الأدمن
     elif call.data == "admin_orders":
 
         bot.send_message(
