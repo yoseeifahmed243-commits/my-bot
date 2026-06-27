@@ -1,74 +1,84 @@
 import telebot
 from telebot import types
 
-# ضع التوكن الجديد هنا
-API_TOKEN = '8788796273:AAHO_IpxG8rDg2nDzFtq8Ifxs5kmPFVud_k'
-ADMIN_ID =  8767607098 # ضع الـ ID الخاص بك هنا
-
+# 1. الإعدادات الأساسية
+API_TOKEN = '8788796273:AAHO_IpxG8rDg2nDzFtq8Ifxs5kmPFVud_k' 
+ADMIN_ID = 8788796273 
 bot = telebot.TeleBot(API_TOKEN)
 
-# قائمة دول وهمية (يمكنك التعديل عليها)
-raw_countries = [("Uzbekistan", 25.5), ("Bangladesh", 12), ("Saudi Arabia", 43.5), 
-                 ("Italy", 36.5), ("Mexico", 22), ("Kazakhstan", 33), 
-                 ("Yemen", 20), ("Latvia", 51)]
+# دالة حساب السعر بزيادة 30%
+def get_price(base_price):
+    return round(base_price * 1.3, 2)
 
-def get_countries_with_markup(page=1):
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    # إضافة زيادة 30%
-    for name, price in raw_countries:
-        new_price = round(price * 1.3, 1)
-        markup.add(types.InlineKeyboardButton(f"{name} : {new_price} P", callback_data=f"buy_{name}"))
-    
-    # صفحة التنقل
-    markup.row(*[types.InlineKeyboardButton(str(i), callback_data=f"page_{i}") for i in range(1, 5)])
-    markup.add(types.InlineKeyboardButton("🔙 رجوع", callback_data="main_menu"))
-    return markup
-
+# 2. القائمة الرئيسية
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-    markup.add("🤍 شراء أرقام وهمية 🤍", "💙 قسم الرشق وزيادة المتابعين 💙", "🤍 الدعم الفني 🤍")
-    
-    text = (
-        "🤍 اهلا بك عزيزي : Telegram SMS 🤍\n"
-        "🕌 في القائمة الرئيسية لدى بوت السلطان 🕌\n"
-        "-------------------------------------\n"
-        f"👤 أيدي الحساب : {message.from_user.id}\n"
-        "💰 رصيد حسابك الان : P 0 💰\n"
-        "⬇️ اتحكم بالبوت من خلال الازرار بالأسفل ⬇️"
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    markup.add(
+        types.InlineKeyboardButton("💳 شحن الرصيد", callback_data="payment_info"),
+        types.InlineKeyboardButton("📈 خدمات الرشق", callback_data="reshaq_menu"),
+        types.InlineKeyboardButton("📱 شراء أرقام SMS", callback_data="numbers_menu"),
+        types.InlineKeyboardButton("👤 حسابي", callback_data="profile"),
+        types.InlineKeyboardButton("🎁 الإحالة", callback_data="referral_menu"),
+        types.InlineKeyboardButton("🎧 الدعم", callback_data="support_menu")
     )
-    bot.send_message(message.chat.id, text, reply_markup=markup)
+    welcome_text = (
+        "✨ **أهلاً بك في بوت السلطان للخدمات الرقمية** ✨\n\n"
+        "الخيار الأول للرشق، الأرقام، والخدمات السريعة.\n"
+        "📊 رصيدك الحالي: 0 ₽"
+    )
+    bot.send_message(message.chat.id, welcome_text, reply_markup=markup, parse_mode="Markdown")
 
-# --- قسم الأرقام ---
-@bot.message_handler(func=lambda message: message.text == "🤍 شراء أرقام وهمية 🤍")
-def buy_numbers(message):
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    services = ["واتساب", "تيليجرام", "فيسبوك", "تيك توك", "انستجرام"]
-    for s in services:
-        markup.add(types.InlineKeyboardButton(s, callback_data=f"type_{s}"))
-    bot.send_message(message.chat.id, "✅ اختر المنصة:", reply_markup=markup)
+# 3. نظام الشحن التفاعلي (مطابق للتصميم)
+@bot.callback_query_handler(func=lambda call: call.data == "payment_info")
+def payment_methods_menu(call):
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    methods = [
+        ("💙 FaucetPay", "pay_faucet"),
+        ("🟢 CWallet", "pay_cwallet"),
+        ("💎 TON", "pay_ton"),
+        ("🟡 USDT BEP20", "pay_bep20"),
+        ("🔵 USDT TRC20", "pay_trc20"),
+        ("⚫ USDT ERC20", "pay_erc20"),
+        ("🟣 USDT Polygon", "pay_polygon"),
+        ("🔙 رجوع", "start")
+    ]
+    for text, callback in methods:
+        markup.add(types.InlineKeyboardButton(text, callback_data=callback))
+    bot.edit_message_text("💳 **اختر طريقة الشحن المناسبة:**", call.message.chat.id, call.message.message_id, reply_markup=markup)
 
-@bot.callback_query_handler(func=lambda call: call.data.startswith("type_"))
-def show_countries(call):
-    bot.edit_message_text("✅ اختر الدولة:", call.message.chat.id, call.message.message_id, reply_markup=get_countries_with_markup())
+@bot.callback_query_handler(func=lambda call: call.data.startswith("pay_"))
+def show_wallet_details(call):
+    method = call.data.split("_")[1]
+    details = {
+        "faucet": "📧 **FaucetPay**\n`telegramsms71@gmail.com`",
+        "cwallet": "💸 **ID Cwallet**\n`61824874`",
+        "ton": "💎 **TON**\n`UQBEejOPxeZK8DyVwkAVQznE1FrMi0EbxxJSia7MhS4H1Co7`",
+        "bep20": "🟡 **USDT BEP20**\n`0xA7fE0a5Ae6Adcd5b47df238F836449b4d0866155`",
+        "trc20": "🔵 **USDT TRC20**\n`TRHUB8kuMpdCoDzST6c4AJ4cJdk6tToz97`",
+        "erc20": "⚫ **USDT ERC20**\n`0x8D7dDE7719e9d6D3e5175CE170Fae00372715493`",
+        "polygon": "🟣 **USDT Polygon**\n`0xA7fE0a5Ae6Adcd5b47df238F836449b4d0866155`"
+    }
+    text = (f"💳 **طريقة الدفع:** {method.upper()}\n\n{details.get(method, '')}\n\n"
+            "📥 حول المبلغ إلى عنوان هذه الشبكة.\n"
+            "ثم اضغط إرسال صورة التحويل للدعم مع كتابة المبلغ.")
+    markup = types.InlineKeyboardMarkup().add(
+        types.InlineKeyboardButton("🎧 تواصل مع الدعم لإثبات الدفع", url="https://t.me/elegramSMS_Support23"),
+        types.InlineKeyboardButton("🔙 رجوع للقائمة", callback_data="payment_info")
+    )
+    bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
-# --- قسم الرشق ---
-@bot.message_handler(func=lambda message: message.text == "💙 قسم الرشق وزيادة المتابعين 💙")
-def reshaq_menu(message):
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    services = ["انستجرام", "تيك توك", "فيسبوك", "تيليجرام", "واتساب"]
-    for s in services:
-        markup.add(types.InlineKeyboardButton(f"💙 {s}", callback_data=f"reshaq_{s}"))
-    bot.send_message(message.chat.id, "💙 اختر منصة الرشق:", reply_markup=markup)
+# 4. باقي الأقسام (الدعوة والدعم)
+@bot.callback_query_handler(func=lambda call: call.data == "referral_menu")
+def referral_menu(call):
+    text = f"🎁 **نظام الإحالة**\nرابط دعوتك: https://t.me/YourBotName?start={call.from_user.id}"
+    markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🔙 رجوع", callback_data="start"))
+    bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup)
 
-@bot.callback_query_handler(func=lambda call: call.data.startswith("reshaq_"))
-def ask_link(call):
-    platform = call.data.split("_")[1]
-    msg = bot.send_message(call.message.chat.id, f"✅ تم اختيار {platform}\nأرسل الرابط الآن:")
-    bot.register_next_step_handler(msg, lambda m: finalize(m, platform))
-
-def finalize(message, platform):
-    bot.send_message(ADMIN_ID, f"🚀 طلب جديد: {platform}\n👤 المستخدم: @{message.from_user.username}\n🔗 الرابط: {message.text}")
-    bot.reply_to(message, "تم استلام طلبك.")
+@bot.callback_query_handler(func=lambda call: call.data == "support_menu")
+def support_menu(call):
+    text = "🎧 **مركز الدعم الفني**\nتواصل معنا: @elegramSMS_Support23"
+    markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🔙 رجوع", callback_data="start"))
+    bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup)
 
 bot.polling(none_stop=True)
