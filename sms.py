@@ -5,15 +5,21 @@ def sms_menu():
     markup = InlineKeyboardMarkup(row_width=2)
 
     markup.add(
-        InlineKeyboardButton("📲 Telegram", callback_data="sms_telegram")
+        InlineKeyboardButton(
+            "📲 Telegram",
+            callback_data="sms_telegram"
+        ),
+        InlineKeyboardButton(
+            "🟢 WhatsApp",
+            callback_data="sms_whatsapp"
+        )
     )
 
     markup.add(
-        InlineKeyboardButton("🟢 WhatsApp", callback_data="sms_whatsapp")
-    )
-
-    markup.add(
-        InlineKeyboardButton("⬅️ رجوع", callback_data="home")
+        InlineKeyboardButton(
+            "⬅️ رجوع",
+            callback_data="home"
+        )
     )
 
     return markup
