@@ -1,71 +1,99 @@
 import telebot
 from telebot import types
+import sqlite3
 
-API_TOKEN = '8788796273:AAHO_IpxG8rDg2nDzFtq8Ifxs5kmPFVud_k'
+API_TOKEN"8788796273:AAGRnTS4g3_o3WdaeiB-fMgv9oWhzoRyBw8"
+ADMIN_ID = 8767607098
+
 bot = telebot.TeleBot(API_TOKEN)
 
-# --- دوال حساب الربح ---
-def add_fixed_profit(price):
-    return round(float(price) + 5.0, 2)  # زيادة 5 روبل ثابتة للأرقام
+# =====================
+# قاعدة البيانات
+# =====================
 
-def add_percent_profit(price):
-    return round(float(price) * 1.05, 2) # زيادة 5% للرشق
+db = sqlite3.connect("bot.db", check_same_thread=False)
+cur = db.cursor()
 
-# --- القائمة الرئيسية ---
+cur.execute("""
+CREATE TABLE IF NOT EXISTS users(
+    user_id INTEGER PRIMARY KEY,
+    balance REAL DEFAULT 0
+)
+""")
+
+db.commit()
+
+# =====================
+# دوال الرصيد
+# =====================
+
+def add_user(user_id):
+    cur.execute(
+        "INSERT OR IGNORE INTO users(user_id,balance) VALUES(?,?)",
+        (user_id, 0)
+    )
+    db.commit()
+
+def get_balance(user_id):
+    cur.execute(
+        "SELECT balance FROM users WHERE user_id=?",
+        (user_id,)
+    )
+
+    row = cur.fetchone()
+
+    if row:
+        return row[0]
+
+    return 0
+
+# =====================
+# القائمة الرئيسية
+# =====================
+
+def main_menu():
+
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("📲 أرقام تيليجرام", callback_data="telegram_numbers"),
+        types.InlineKeyboardButton("💬 أرقام واتساب", callback_data="whatsapp_numbers")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("📈 خدمات الرشق", callback_data="reshaq")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("💳 شحن الرصيد", callback_data="payment")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🎁 الإحالة", callback_data="referral"),
+        types.InlineKeyboardButton("🎧 الدعم", callback_data="support")
+    )
+
+    return markup
+
+# =====================
+# ستارت
+# =====================
+
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(
-        types.InlineKeyboardButton("📱 أرقام وهمية", callback_data="numbers_menu"),
-        types.InlineKeyboardButton("📈 خدمات الرشق", callback_data="reshaq_menu"),
-        types.InlineKeyboardButton("💳 شحن الرصيد", callback_data="payment_info"),
-        types.InlineKeyboardButton("🎁 الإحالة", callback_data="referral_menu"),
-        types.InlineKeyboardButton("🎧 الدعم", callback_data="support_menu")
+
+    add_user(message.from_user.id)
+
+    balance = get_balance(message.from_user.id)
+
+    bot.send_message(
+        message.chat.id,
+        f"✨ مرحباً بك في البوت\n\n💰 رصيدك: {balance} ₽",
+        reply_markup=main_menu()
     )
-    bot.send_message(message.chat.id, "✨ **مرحباً بك في بوت السلطان**\n📊 رصيدك: 0 ₽", reply_markup=markup, parse_mode="Markdown")
 
-# --- 1. قسم الأرقام (زيادة 5 روبل) ---
-@bot.callback_query_handler(func=lambda call: call.data == "numbers_menu")
-def numbers_menu(call):
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    numbers = {"أوزبكستان": 25.5, "السعودية": 43.5, "مصر": 16.5, "العراق": 65.5}
-    for country, price in numbers.items():
-        markup.add(types.InlineKeyboardButton(f"{country} ({add_fixed_profit(price)} ₽)", callback_data=f"buy_{country}"))
-    markup.add(types.InlineKeyboardButton("🔙 رجوع", callback_data="start"))
-    bot.edit_message_text("📱 **اختر الدولة (الأسعار شاملة الربح):**", call.message.chat.id, call.message.message_id, reply_markup=markup)
+# =====================
+# تشغيل البوت
+# =====================
 
-# --- 2. قسم الرشق (زيادة 5%) ---
-@bot.callback_query_handler(func=lambda call: call.data == "reshaq_menu")
-def reshaq_menu(call):
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    services = {"متابعين انستا (1000)": 50.0, "لايكات انستا (1000)": 20.0}
-    for service, price in services.items():
-        markup.add(types.InlineKeyboardButton(f"{service} ({add_percent_profit(price)} ₽)", callback_data=f"buy_reshaq_{service}"))
-    markup.add(types.InlineKeyboardButton("🔙 رجوع", callback_data="start"))
-    bot.edit_message_text("📈 **اختر خدمة الرشق:**", call.message.chat.id, call.message.message_id, reply_markup=markup)
-
-# --- 3. الشحن التفاعلي (مطابق للصورة) ---
-@bot.callback_query_handler(func=lambda call: call.data == "payment_info")
-def payment_methods(call):
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    methods = [("💙 FaucetPay", "pay_faucet"), ("🟢 CWallet", "pay_cwallet"), ("💎 TON", "pay_ton")]
-    for text, cd in methods: markup.add(types.InlineKeyboardButton(text, callback_data=cd))
-    markup.add(types.InlineKeyboardButton("🔙 رجوع", callback_data="start"))
-    bot.edit_message_text("💳 **اختر طريقة الشحن:**", call.message.chat.id, call.message.message_id, reply_markup=markup)
-
-@bot.callback_query_handler(func=lambda call: call.data.startswith("pay_"))
-def show_details(call):
-    method = call.data.split("_")[1]
-    details = {"faucet": "📧 `telegramsms71@gmail.com`", "cwallet": "💸 `61824874`", "ton": "💎 `UQBEejOP...`"}
-    text = f"💳 **تفاصيل {method.upper()}**\n\n{details.get(method, '')}\n\n⚠️ بعد التحويل أرسل الإيصال للدعم."
-    markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🎧 تواصل مع الدعم", url="https://t.me/elegramSMS_Support23"), types.InlineKeyboardButton("🔙 رجوع", callback_data="payment_info"))
-    bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-# --- 4. باقي الأقسام ---
-@bot.callback_query_handler(func=lambda call: call.data in ["support_menu", "referral_menu"])
-def menu_extras(call):
-    text = "🎧 **الدعم الفني:** @Sultan_Support27" if call.data == "support_menu" else "🎁 **رابط الإحالة:** ارسله لأصدقائك!"
-    markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🔙 رجوع", callback_data="start"))
-    bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup)
-
-bot.polling(none_stop=True)
+bot.infinity_polling()
