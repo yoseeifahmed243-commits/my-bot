@@ -1,7 +1,7 @@
 import telebot
 from telebot import types
 
-API_TOKEN = 'YOUR_BOT_TOKEN_HERE'
+API_TOKEN = '8788796273:AAHO_IpxG8rDg2nDzFtq8Ifxs5kmPFVud_k'
 bot = telebot.TeleBot(API_TOKEN)
 
 # --- دوال حساب الربح ---
