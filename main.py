@@ -1,27 +1,30 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from config import TOKEN, BOT_NAME, SUPPORT, ADMIN_ID
+import database
+
 from sms import sms_menu
 from countries import countries_menu
-
-from config import TOKEN, BOT_NAME, SUPPORT
-import database
+from deposit import deposit_menu
+from admin import admin_menu, is_admin
 
 bot = telebot.TeleBot(TOKEN)
 
 
 # القائمة الرئيسية
 def main_menu():
+
     markup = InlineKeyboardMarkup(row_width=2)
 
     markup.add(
         InlineKeyboardButton("📱 شراء أرقام SMS", callback_data="sms"),
-        InlineKeyboardButton("📈 خدمات الرشق", callback_data="smm")
+        InlineKeyboardButton("💳 شحن الرصيد", callback_data="deposit")
     )
 
     markup.add(
-        InlineKeyboardButton("💳 شحن الرصيد", callback_data="deposit"),
-        InlineKeyboardButton("👤 حسابي", callback_data="account")
+        InlineKeyboardButton("👤 حسابي", callback_data="account"),
+        InlineKeyboardButton("📈 خدمات الرشق", callback_data="smm")
     )
 
     markup.add(
@@ -37,28 +40,52 @@ def main_menu():
 
 @bot.message_handler(commands=["start"])
 def start(message):
+
     database.add_user(message.from_user.id)
 
     balance = database.get_balance(message.from_user.id)
 
-    text = f"""✨ أهلاً بك في {BOT_NAME}
+    bot.send_message(
+        message.chat.id,
+        f"""
+✨ أهلاً بك في {BOT_NAME}
 
-💰 رصيدك الحالي: {balance}$
+💰 رصيدك: {balance}$
 
-اختر الخدمة من القائمة بالأسفل.
-"""
+اختر الخدمة من الأسفل.
+""",
+        reply_markup=main_menu()
+    )
+
+
+@bot.message_handler(commands=["admin"])
+def admin(message):
+
+    if not is_admin(message.from_user.id):
+        return
 
     bot.send_message(
         message.chat.id,
-        text,
-        reply_markup=main_menu()
+        "👑 لوحة الأدمن",
+        reply_markup=admin_menu()
     )
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def callbacks(call):
 
-    if call.data == "sms":
+    # القائمة الرئيسية
+    if call.data == "home":
+
+        bot.edit_message_text(
+            "🏠 القائمة الرئيسية",
+            call.message.chat.id,
+            call.message.message_id,
+            reply_markup=main_menu()
+        )
+
+    # شراء SMS
+    elif call.data == "sms":
 
         bot.edit_message_text(
             "📱 اختر الخدمة",
@@ -67,6 +94,7 @@ def callbacks(call):
             reply_markup=sms_menu()
         )
 
+    # اختيار Telegram أو WhatsApp
     elif call.data.startswith("sms_"):
 
         service = call.data.replace("sms_", "")
@@ -78,6 +106,16 @@ def callbacks(call):
             reply_markup=countries_menu(service)
         )
 
+    # شحن الرصيد
+    elif call.data == "deposit":
+
+        bot.edit_message_text(
+            "💳 اختر طريقة الشحن",
+            call.message.chat.id,
+            call.message.message_id,
+            reply_markup=deposit_menu()
+    )
+            # شراء رقم
     elif call.data.startswith("buy_"):
 
         _, service, country = call.data.split("_", 2)
@@ -113,10 +151,11 @@ def callbacks(call):
             "uk": 10
         }
 
-        rub_price = prices.get(country, 10)
-        final_price = round(rub_price * 1.30, 2)
+        base_price = prices.get(country, 10)
+        final_price = round(base_price * 1.30, 2)
 
         markup = InlineKeyboardMarkup()
+
         markup.add(
             InlineKeyboardButton(
                 f"🛒 شراء مقابل {final_price} ₽",
@@ -132,50 +171,157 @@ def callbacks(call):
         )
 
         bot.edit_message_text(
-            f"""📲 {service.title()}
+            f"""📲 الخدمة: {service.title()}
 
 🌍 الدولة: {country}
 
 💰 السعر: {final_price} ₽
 
-اضغط شراء لإكمال الطلب.""",
+اضغط شراء لإرسال الطلب.""",
             call.message.chat.id,
             call.message.message_id,
             reply_markup=markup
         )
 
-    elif call.data == "smm":
+    # تأكيد الشراء
+    elif call.data.startswith("confirm_"):
 
-        bot.answer_callback_query(call.id)
+        _, service, country = call.data.split("_", 2)
+
+        user = call.from_user
+
         bot.send_message(
-            call.message.chat.id,
-            "📈 قسم خدمات الرشق (قريبًا)."
+            ADMIN_ID,
+            f"""📥 طلب جديد
+
+👤 الاسم: {user.first_name}
+
+🆔 ID: {user.id}
+
+📲 الخدمة: {service}
+
+🌍 الدولة: {country}
+"""
         )
 
-    elif call.data == "deposit":
+        bot.edit_message_text(
+            """✅ تم استلام طلبك.
 
-        bot.answer_callback_query(call.id)
-        bot.send_message(
+📩 سيتم التواصل معك خلال دقائق.""",
             call.message.chat.id,
-            "💳 قسم شحن الرصيد (قريبًا)."
+            call.message.message_id
         )
 
+    # حسابي
     elif call.data == "account":
 
         balance = database.get_balance(call.from_user.id)
 
         bot.send_message(
             call.message.chat.id,
-            f"👤 حسابك\n\n💰 الرصيد: {balance}$"
+            f"""👤 حسابك
+
+🆔 ID : {call.from_user.id}
+
+💰 الرصيد : {balance}$"""
         )
 
+    # الرشق
+    elif call.data == "smm":
+
+        bot.answer_callback_query(
+            call.id,
+            "قريباً..."
+        )
+
+    # الإحالة
     elif call.data == "referral":
+
+        bot.answer_callback_query(
+            call.id,
+            "قريباً..."
+                                             )    # طرق الدفع
+    elif call.data.startswith("pay_"):
+
+        method = call.data.replace("pay_", "")
 
         bot.send_message(
             call.message.chat.id,
-            "🎁 نظام الإحالة (قريبًا)."
+            f"""💳 طريقة الدفع: {method.upper()}
+
+📤 حول المبلغ إلى عنوان هذه الشبكة.
+
+ثم اضغط إرسال صورة التحويل مع كتابة المبلغ.
+
+مثال:
+20 USDT"""
+        )
+
+    # طلبات الأدمن
+    elif call.data == "admin_orders":
+
+        bot.send_message(
+            call.message.chat.id,
+            "📦 سيتم عرض طلبات الشراء هنا."
+        )
+
+    elif call.data == "admin_deposits":
+
+        bot.send_message(
+            call.message.chat.id,
+            "💳 سيتم عرض طلبات الشحن هنا."
+        )
+
+    elif call.data == "admin_users":
+
+        bot.send_message(
+            call.message.chat.id,
+            f"👥 عدد المستخدمين: {database.total_users()}"
+        )
+
+    elif call.data == "admin_stats":
+
+        bot.send_message(
+            call.message.chat.id,
+            f"""📊 الإحصائيات
+
+👥 المستخدمون: {database.total_users()}
+
+📦 الطلبات: {database.total_orders()}
+"""
         )
 
 
+# استقبال الصور
+@bot.message_handler(content_types=["photo"])
+def receive_photo(message):
+
+    caption = message.caption if message.caption else "بدون مبلغ"
+
+    bot.forward_message(
+        ADMIN_ID,
+        message.chat.id,
+        message.message_id
+    )
+
+    bot.send_message(
+        ADMIN_ID,
+        f"""💳 طلب شحن جديد
+
+👤 {message.from_user.first_name}
+
+🆔 {message.from_user.id}
+
+💰 {caption}
+"""
+    )
+
+    bot.reply_to(
+        message,
+        "✅ تم استلام إثبات الدفع وسيتم مراجعته."
+    )
+
+
 print("Bot Started...")
-bot.infinity_polling()
+
+bot.infinity_polling(skip_pending=True)
