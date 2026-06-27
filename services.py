@@ -1,6 +1,6 @@
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-def countries_menu():
+def countries_menu(service):
     markup = InlineKeyboardMarkup(row_width=2)
 
     countries = [
@@ -28,12 +28,15 @@ def countries_menu():
         markup.add(
             InlineKeyboardButton(
                 text,
-                callback_data=f"buy_{code}"
+                callback_data=f"buy_{service}_{code}"
             )
         )
 
     markup.add(
-        InlineKeyboardButton("⬅️ رجوع", callback_data="sms")
+        InlineKeyboardButton(
+            "⬅️ رجوع",
+            callback_data="sms"
+        )
     )
 
     return markup
