@@ -4,45 +4,73 @@ from telebot import types
 TOKEN = '8851361153:AAGhmCZJrEeAwC8JbA8l4ehyOUC6zBJe9hg'
 bot = telebot.TeleBot(TOKEN)
 
-SUPPORT = "https://t.me/elegramSMS_Support23"
+# البيانات المعتمدة
+SUPPORT_USER = "@elegramSMS_Support23"
+CWALLET_ID = "61824874"
+FAUCETPAY_USER = "TelegramSMS"
 
-# --- القائمة الرئيسية ---
-def main_menu():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(
-        types.InlineKeyboardButton("📱 شراء أرقام وهمية", callback_data="numbers"),
-        types.InlineKeyboardButton("📢 خدمات الرشق والمتابعين", callback_data="rashq"),
-        types.InlineKeyboardButton("💳 طرق الدفع والشحن", callback_data="payment"),
-        types.InlineKeyboardButton("📞 التواصل مع الدعم", url=SUPPORT)
-    )
-    return markup
-
-# --- زر الرجوع ---
-def back_markup():
+def get_back_button():
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton("✖️ رجوع للقائمة الرئيسية", callback_data="main"))
     return markup
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "👋 أهلاً بك في بوت السلطان\nاختيارك الأفضل للخدمات الرقمية.", reply_markup=main_menu())
+    user = message.from_user
+    text = (f"👋 اهلا بك عزيزي : {user.first_name}\n"
+            f"♕ في القائمة الرئيسية لدى بوت السلطان ♕\n"
+            f"-------------------------------\n"
+            f"📧 حسابك : {user.id}@SULTAN.COM\n"
+            f"💰 رصيد حسابك الان : 0 ₱\n"
+            f"-------------------------------\n"
+            f"⬇️ اتحكم بالبوت من خلال الازرار بالأسفل ⬇️")
+    
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("♡ شراء أرقام وهمية (تليجرام/واتساب) ♡", callback_data="numbers"),
+        types.InlineKeyboardButton("♡ قسم المتابعين والخدمات (رشق) ♡", callback_data="rashq"),
+        types.InlineKeyboardButton("♡ شحن حسابك (طرق الدفع) ♡", callback_data="payment"),
+        types.InlineKeyboardButton("♡ مشاركة رابط الدعوة الخاص بك ♡", callback_data="referral"),
+        types.InlineKeyboardButton("♡ الدعم الفني ♡", url=f"https://t.me/{SUPPORT_USER.replace('@', '')}")
+    )
+    bot.send_message(message.chat.id, text, reply_markup=markup)
 
 @bot.callback_query_handler(func=lambda call: True)
 def query_handler(call):
     if call.data == "main":
-        bot.edit_message_text("القائمة الرئيسية:", call.message.chat.id, call.message.message_id, reply_markup=main_menu())
-    
+        start(call.message)
+        
     elif call.data == "numbers":
-        text = "📱 قسم الأرقام الوهمية:\nنقدم أرقاماً مفعلة لتطبيقات:\n- تليجرام، واتساب، فيسبوك، جوجل، تيك توك، والمزيد.\n\nتواصل مع الدعم لطلب دولتك المطلوبة."
-        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=back_markup())
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("📱 أرقام تليجرام", callback_data="n_tg"),
+                   types.InlineKeyboardButton("📱 أرقام واتساب", callback_data="n_wa"),
+                   types.InlineKeyboardButton("✖️ رجوع", callback_data="main"))
+        bot.edit_message_text("📱 قسم شراء الأرقام الوهمية:", call.message.chat.id, call.message.message_id, reply_markup=markup)
         
     elif call.data == "rashq":
-        text = "📢 خدمات الرشق:\n- تليجرام (مشاهدات/أعضاء)\n- إنستجرام (فولو/لايكات)\n- تيك توك (مشاهدات/فولو)\n- يوتيوب (مشاهدات/ساعات)\n\nأسعار خاصة للموزعين!"
-        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=back_markup())
-        
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        markup.add(types.InlineKeyboardButton("فيسبوك", callback_data="r_fb"),
+                   types.InlineKeyboardButton("إنستجرام", callback_data="r_insta"),
+                   types.InlineKeyboardButton("تليجرام", callback_data="r_tg"),
+                   types.InlineKeyboardButton("تيك توك", callback_data="r_tt"),
+                   types.InlineKeyboardButton("جوجل", callback_data="r_go"),
+                   types.InlineKeyboardButton("✖️ رجوع", callback_data="main"))
+        bot.edit_message_text("📢 قسم المتابعين والخدمات (رشق):", call.message.chat.id, call.message.message_id, reply_markup=markup)
+
     elif call.data == "payment":
-        text = "💳 طرق الدفع المتاحة:\n\n• Cwallet ID: 61824874\n• FaucetPay: TelegramSMS\n• USDT (TRC-20, BEP-20, Polygon)\n• عملات TON\n\nيرجى إرسال الإيصال للدعم بعد التحويل."
-        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=back_markup())
+        text = (f"💳 طرق الدفع المتاحة للشحن:\n\n"
+                f"• Cwallet ID: {CWALLET_ID}\n"
+                f"• FaucetPay: {FAUCETPAY_USER}\n"
+                f"• USDT (TRC-20, BEP-20, Polygon)\n"
+                f"• عملات TON\n\n"
+                f"⚠️ بعد التحويل أرسل صورة الإيصال للدعم: {SUPPORT_USER}")
+        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=get_back_button())
+
+    elif call.data == "referral":
+        bot.edit_message_text(f"🔗 رابط الدعوة الخاص بك:\nhttps://t.me/{(bot.get_me().username)}?start={call.message.chat.id}\n\nشارك الرابط واربح رصيداً مجانياً!", call.message.chat.id, call.message.message_id, reply_markup=get_back_button())
+
+    elif call.data.startswith("n_") or call.data.startswith("r_"):
+        bot.edit_message_text(f"✅ تم اختيار الخدمة. تواصل مع الدعم لإتمام الطلب فوراً:\n{SUPPORT_USER}", call.message.chat.id, call.message.message_id, reply_markup=get_back_button())
 
 if __name__ == "__main__":
     bot.remove_webhook()
