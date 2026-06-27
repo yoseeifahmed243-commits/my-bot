@@ -1,22 +1,13 @@
 import sqlite3
 
-DB_NAME = "bot.db"
+db = sqlite3.connect("bot.db", check_same_thread=False)
+cursor = db.cursor()
 
-
-def connect():
-    return sqlite3.connect(DB_NAME, check_same_thread=False)
-
-
-conn = connect()
-cursor = conn.cursor()
-
-
-# إنشاء الجداول
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS users(
     user_id INTEGER PRIMARY KEY,
     balance REAL DEFAULT 0,
-    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    orders INTEGER DEFAULT 0
 )
 """)
 
@@ -25,56 +16,61 @@ CREATE TABLE IF NOT EXISTS orders(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     service TEXT,
-    link TEXT,
-    quantity INTEGER,
+    country TEXT,
     price REAL,
-    status TEXT DEFAULT 'Pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    status TEXT
 )
 """)
 
-conn.commit()
+db.commit()
 
 
-# إضافة مستخدم
 def add_user(user_id):
     cursor.execute(
         "INSERT OR IGNORE INTO users(user_id) VALUES(?)",
         (user_id,)
     )
-    conn.commit()
+    db.commit()
 
 
-# الرصيد
 def get_balance(user_id):
     cursor.execute(
         "SELECT balance FROM users WHERE user_id=?",
         (user_id,)
     )
-    row = cursor.fetchone()
-    return row[0] if row else 0
+    data = cursor.fetchone()
+
+    if data:
+        return data[0]
+
+    return 0
 
 
-# تعديل الرصيد
-def update_balance(user_id, amount):
+def add_balance(user_id, amount):
     cursor.execute(
-        "UPDATE users SET balance=? WHERE user_id=?",
+        "UPDATE users SET balance=balance+? WHERE user_id=?",
         (amount, user_id)
     )
-    conn.commit()
+    db.commit()
 
 
-# إنشاء طلب
-def create_order(user_id, service, link, quantity, price):
-    cursor.execute("""
-        INSERT INTO orders
-        (user_id, service, link, quantity, price)
-        VALUES(?,?,?,?,?)
-    """, (user_id, service, link, quantity, price))
-    conn.commit()
+def remove_balance(user_id, amount):
+    cursor.execute(
+        "UPDATE users SET balance=balance-? WHERE user_id=?",
+        (amount, user_id)
+    )
+    db.commit()
 
 
-# جميع الطلبات
-def get_orders():
-    cursor.execute("SELECT * FROM orders ORDER BY id DESC")
-    return cursor.fetchall()
+def add_order(user_id, service, country, price):
+    cursor.execute(
+        "INSERT INTO orders(user_id,service,country,price,status) VALUES(?,?,?,?,?)",
+        (user_id, service, country, price, "Pending")
+    )
+
+    cursor.execute(
+        "UPDATE users SET orders=orders+1 WHERE user_id=?",
+        (user_id,)
+    )
+
+    db.commit()
