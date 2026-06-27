@@ -77,7 +77,7 @@ def referral_menu(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "support_menu")
 def support_menu(call):
-    text = "🎧 **مركز الدعم الفني**\nتواصل معنا: @elegramSMS_Support23"
+    text = "🎧 **مركز الدعم الفني**\nتواصل معنا: @Sultan_Support27"
     markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🔙 رجوع", callback_data="start"))
     bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup)
 
