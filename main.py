@@ -247,16 +247,36 @@ def callbacks(call):
 
         bot.send_message(
             call.message.chat.id,
-            f"""💳 طريقة الدفع: {method.upper()}
+            # طرق الدفع
+elif call.data.startswith("pay_"):
 
-📤 حول المبلغ إلى عنوان هذه الشبكة.
+    method = call.data.replace("pay_", "")
 
-ثم اضغط إرسال صورة التحويل مع كتابة المبلغ.
+    addresses = {
+        "ton": "UQBEEjOPxeZK8DyVwkAVQznE1FrMi0EbxxJSia7MhS4H1Co7",
+        "trc20": "TRHUB8kuMpdCoDzST6c4AJ4cJdk6tToz97",
+        "erc20": "0x8D7dDE7719e9d6D3e5175CE170Fae00372715493",
+        "bep20": "0xA7fE0a5Ae6Adcd5b47df238F836449b4d0866155",
+        "polygon": "0xA7fE0a5Ae6Adcd5b47df238F836449b4d0866155",
+        "faucetpay": "telegramsms71@gmail.com",
+        "cwallet": "61824874"
+    }
+
+    address = addresses.get(method, "غير متوفر")
+
+    bot.send_message(
+        call.message.chat.id,
+        f"""💳 طريقة الدفع: {method.upper()}
+
+📍 عنوان الدفع:
+
+{address}
+
+📸 بعد التحويل أرسل صورة التحويل مع كتابة المبلغ.
 
 مثال:
 20 USDT"""
-        )
-
+    )
     # طلبات الأدمن
     elif call.data == "admin_orders":
 
@@ -316,12 +336,13 @@ def receive_photo(message):
 """
     )
 
-    bot.reply_to(
-        message,
-        "✅ تم استلام إثبات الدفع وسيتم مراجعته."
+    bot.edit_message_text(
+    f"""✅ تم استلام طلبك.
+
+📩 سيتم التواصل معك خلال دقائق.
+
+📞 الدعم:
+{SUPPORT}""",
+    call.message.chat.id,
+    call.message.message_id
     )
-
-
-print("Bot Started...")
-
-bot.infinity_polling(skip_pending=True)
