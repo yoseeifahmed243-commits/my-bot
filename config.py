@@ -1,0 +1,9 @@
+TOKEN = "8851361153:AAHuB4-yicX-NTUPTfXoCv_MlY86j0S60aM"
+
+ADMINS = [
+    8767607098
+]
+
+BOT_NAME = "Telegram SMS"
+
+SUPPORT = "@Sultan_Support27"
