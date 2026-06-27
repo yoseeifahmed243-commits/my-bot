@@ -1,4 +1,5 @@
 import telebot
+from sms import sms_menu
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import TOKEN, BOT_NAME, SUPPORT
 import database
@@ -52,9 +53,13 @@ def start(message):
 def callbacks(call):
 
     if call.data == "sms":
-        bot.answer_callback_query(call.id)
-        bot.send_message(call.message.chat.id, "📱 قسم شراء أرقام SMS (قريبًا).")
 
+    bot.edit_message_text(
+        "📱 اختر الخدمة المطلوبة",
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=sms_menu()
+    )
     elif call.data == "smm":
         bot.answer_callback_query(call.id)
         bot.send_message(call.message.chat.id, "📈 قسم خدمات الرشق (قريبًا).")
