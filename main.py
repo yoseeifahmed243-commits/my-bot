@@ -1,7 +1,19 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from config import TOKEN, BOT_NAME, SUPPORT, ADMIN_ID
+from config import (
+    TOKEN,
+    BOT_NAME,
+    SUPPORT,
+    ADMIN_ID,
+    TON_ADDRESS,
+    TRC20_ADDRESS,
+    ERC20_ADDRESS,
+    BEP20_ADDRESS,
+    POLYGON_ADDRESS,
+    FAUCETPAY,
+    CWALLET
+)
 import database
 
 from sms import sms_menu
