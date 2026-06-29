@@ -155,28 +155,82 @@ def callbacks(call):
     # واتساب
     elif call.data == "whatsapp":
 
-        markup = types.InlineKeyboardMarkup(row_width=2)
+    markup = types.InlineKeyboardMarkup(row_width=2)
 
-        markup.add(
-            types.InlineKeyboardButton("🇪🇬 مصر - 24.5 ₽", callback_data="wa_eg"),
-            types.InlineKeyboardButton("🇺🇸 أمريكا - 21 ₽", callback_data="wa_us")
-        )
+    markup.add(
+        types.InlineKeyboardButton("🎲 عشوائي | 10 ₽", callback_data="wa_random")
+    )
 
-        markup.add(
-            types.InlineKeyboardButton("🇸🇦 السعودية - 51.5 ₽", callback_data="wa_sa"),
-            types.InlineKeyboardButton("🇬🇧 بريطانيا - 30 ₽", callback_data="wa_uk")
-        )
+    markup.add(
+        types.InlineKeyboardButton("🇵🇭 الفلبين | 10 ₽", callback_data="wa_ph"),
+        types.InlineKeyboardButton("🇻🇳 فيتنام | 10 ₽", callback_data="wa_vn")
+    )
 
-        markup.add(
-            types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
-        )
+    markup.add(
+        types.InlineKeyboardButton("🇮🇩 إندونيسيا | 10 ₽", callback_data="wa_id"),
+        types.InlineKeyboardButton("🇹🇭 تايلاند | 10 ₽", callback_data="wa_th")
+    )
 
-        bot.edit_message_text(
-            "🟢 شراء أرقام واتساب\n\nاختر الدولة:",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            reply_markup=markup
-        )
+    markup.add(
+        types.InlineKeyboardButton("🇨🇦 كندا | 10 ₽", callback_data="wa_ca"),
+        types.InlineKeyboardButton("🇪🇬 مصر | 10 ₽", callback_data="wa_eg")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇿🇦 جنوب أفريقيا | 10 ₽", callback_data="wa_za"),
+        types.InlineKeyboardButton("🇲🇦 المغرب | 13 ₽", callback_data="wa_ma")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇵🇷 بورتوريكو | 10 ₽", callback_data="wa_pr"),
+        types.InlineKeyboardButton("🇱🇾 ليبيا | 10 ₽", callback_data="wa_ly")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇫🇷 فرنسا | 10 ₽", callback_data="wa_fr"),
+        types.InlineKeyboardButton("🇾🇪 اليمن | 13 ₽", callback_data="wa_ye")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇸🇾 سوريا | 10 ₽", callback_data="wa_sy"),
+        types.InlineKeyboardButton("🇩🇿 الجزائر | 10 ₽", callback_data="wa_dz")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇦🇴 أنغولا | 10 ₽", callback_data="wa_ao"),
+        types.InlineKeyboardButton("🇧🇷 البرازيل | 8 ₽", callback_data="wa_br")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇲🇽 المكسيك | 10 ₽", callback_data="wa_mx"),
+        types.InlineKeyboardButton("🇦🇺 أستراليا | 10 ₽", callback_data="wa_au")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇸🇦 السعودية | 18 ₽", callback_data="wa_sa"),
+        types.InlineKeyboardButton("🇾🇪 اليمن | 13 ₽", callback_data="wa_ye2")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇬🇧 بريطانيا | 10 ₽", callback_data="wa_uk"),
+        types.InlineKeyboardButton("🇹🇷 تركيا | 10 ₽", callback_data="wa_tr")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇧🇩 بنغلاديش | 10 ₽", callback_data="wa_bd"),
+        types.InlineKeyboardButton("🇮🇶 العراق | 10 ₽", callback_data="wa_iq")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
+    )
+
+    bot.edit_message_text(
+        "🟢 عروض واتساب\n\n💰 رصيدك الآن: 0 ₽\n\nاختر الدولة التي تريد شراء رقم منها:",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+    )
     # الرجوع للرئيسية
     elif call.data == "home":
 
