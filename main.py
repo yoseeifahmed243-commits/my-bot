@@ -110,7 +110,7 @@ def callbacks(call):
             message_id=call.message.message_id,
             reply_markup=main_menu()
     )
-        elif call.data== "ttelegram
+elif call.data=="telegram":
     markup = types.InlineKeyboardMarkup(row_width=2)
 
 markup.add(
