@@ -161,3 +161,9 @@ def callbacks(call):
             call.message.chat.id,
             "🛠 الدعم الفني:\n@sms2221bot"
         )
+# ==========================
+# تشغيل البوت
+# ==========================
+
+print("Bot Started...")
+bot.infinity_polling(skip_pending=True)
