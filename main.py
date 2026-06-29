@@ -96,3 +96,68 @@ def start(message):
 اختر الخدمة من القائمة.""",
         reply_markup=main_menu()
     )
+# ==========================
+# الأزرار
+# ==========================
+
+@bot.callback_query_handler(func=lambda call: True)
+def callbacks(call):
+
+    if call.data == "numbers":
+
+        markup = types.InlineKeyboardMarkup(row_width=2)
+
+        markup.add(
+            types.InlineKeyboardButton("📲 تيليجرام", callback_data="telegram"),
+            types.InlineKeyboardButton("🟢 واتساب", callback_data="whatsapp")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("🔙 رجوع", callback_data="home")
+        )
+
+        bot.edit_message_text(
+            "🛒 شراء أرقام وهمية\n\nاختر الخدمة:",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=markup
+        )
+
+    elif call.data == "home":
+
+        balance = get_balance(call.from_user.id)
+
+        bot.edit_message_text(
+            f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
+💰 رصيدك الحالي: {balance} ₽
+
+اختر الخدمة من القائمة.""",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=main_menu()
+        )
+
+    elif call.data == "telegram":
+        bot.answer_callback_query(call.id, "📲 سيتم إضافة قائمة تيليجرام")
+
+    elif call.data == "whatsapp":
+        bot.answer_callback_query(call.id, "🟢 سيتم إضافة قائمة واتساب")
+
+    elif call.data == "smm":
+        bot.answer_callback_query(call.id, "📈 سيتم إضافة قسم الرشق")
+
+    elif call.data == "payment":
+        bot.answer_callback_query(call.id, "💳 سيتم إضافة الشحن")
+
+    elif call.data == "ref":
+        bot.answer_callback_query(call.id, "🔗 سيتم إضافة رابط الدعوة")
+
+    elif call.data == "settings":
+        bot.answer_callback_query(call.id, "⚙️ سيتم إضافة الإعدادات")
+
+    elif call.data == "support":
+        bot.send_message(
+            call.message.chat.id,
+            "🛠 الدعم الفني:\n@sms2221bot"
+        )
