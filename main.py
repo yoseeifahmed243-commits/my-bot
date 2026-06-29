@@ -77,7 +77,7 @@ def start(message):
 )
 @bot.callback_query_handler(func=lambda call: True)
 def callbacks(call):
-        if call.data == "numbers":
+   if call.data == "numbers":
 
         markup = types.InlineKeyboardMarkup(row_width=2)
 
@@ -117,7 +117,7 @@ markup.add(
     types.InlineKeyboardButton("🇺🇿 Uzbekistan : 30.5 ₽", callback_data="buy_uzbekistan"),
     types.InlineKeyboardButton("🇧🇩 Bangladesh : 17 ₽", callback_data="buy_bangladesh")
 )
-
+     
 markup.add(
     types.InlineKeyboardButton("🇸🇦 Saudi Arabia : 48.5 ₽", callback_data="buy_saudi"),
     types.InlineKeyboardButton("🇷🇺 Russia : 56 ₽", callback_data="buy_russia")
