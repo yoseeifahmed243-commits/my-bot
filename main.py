@@ -419,8 +419,6 @@ markup.add(
     types.InlineKeyboardButton("🇶🇦 Qatar : 92 ₽", callback_data="buy_qatar")
 )
 
-markup.add(
-    types.InlineKeyboardButton("
 elif call.data == "telegram_page6":
     markup = types.InlineKeyboardMarkup(row_width=2)
 
