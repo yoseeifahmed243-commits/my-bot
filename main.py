@@ -2,14 +2,14 @@ import telebot
 from telebot import types
 import sqlite3
 
-API_TOKEN = "8788796273:AAFeq08ENxml7Afo_rz0LFDXTxAg1ukZQ78"
+TOKEN = "8788796273:AAGCW4qxUjgbNC1kODF3kNxGdaQoJlQYKG8"
 ADMIN_ID = 8767607098
 
-bot = telebot.TeleBot(API_TOKEN)
+bot = telebot.TeleBot(TOKEN)
 
-# =====================
+# ==========================
 # قاعدة البيانات
-# =====================
+# ==========================
 
 db = sqlite3.connect("bot.db", check_same_thread=False)
 cur = db.cursor()
@@ -23,23 +23,23 @@ CREATE TABLE IF NOT EXISTS users(
 
 db.commit()
 
-# =====================
-# دوال الرصيد
-# =====================
+# ==========================
+# الدوال
+# ==========================
 
 def add_user(user_id):
     cur.execute(
-        "INSERT OR IGNORE INTO users(user_id,balance) VALUES(?,?)",
-        (user_id, 0)
+        "INSERT OR IGNORE INTO users(user_id) VALUES(?)",
+        (user_id,)
     )
     db.commit()
+
 
 def get_balance(user_id):
     cur.execute(
         "SELECT balance FROM users WHERE user_id=?",
         (user_id,)
     )
-
     row = cur.fetchone()
 
     if row:
@@ -47,21 +47,26 @@ def get_balance(user_id):
 
     return 0
 
-# =====================
+
+# ==========================
 # القائمة الرئيسية
-# =====================
+# ==========================
+
 def main_menu():
 
     markup = types.InlineKeyboardMarkup(row_width=2)
 
     markup.add(
-        types.InlineKeyboardButton("🛒 شراء أرقام وهمية", callback_data="buy_numbers"),
+        types.InlineKeyboardButton("🛒 شراء أرقام وهمية", callback_data="numbers")
+    )
+
+    markup.add(
         types.InlineKeyboardButton("📈 قسم الرشق", callback_data="smm")
     )
 
     markup.add(
         types.InlineKeyboardButton("💳 اشحن حسابك", callback_data="payment"),
-        types.InlineKeyboardButton("🔗 رابط الدعوة", callback_data="referral")
+        types.InlineKeyboardButton("🔗 رابط الدعوة", callback_data="ref")
     )
 
     markup.add(
@@ -71,14 +76,12 @@ def main_menu():
 
     return markup
 
-    return markup
 
-# =====================
-# ستارت
-# =====================
+# ==========================
+# /start
+# ==========================
 
-@bot.message_handler(commands=['start'])
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=["start"])
 def start(message):
 
     add_user(message.from_user.id)
@@ -89,102 +92,11 @@ def start(message):
         message.chat.id,
         f"""👋 أهلاً بك في بوت SULTAN PRO 👑
 
-✨ نقدم لك أفضل خدمات الأرقام الوهمية والرشق.
-
 💰 رصيدك الحالي: {balance} ₽
 
-اختر الخدمة من الأزرار بالأسفل.""",
+اختر الخدمة من القائمة.""",
         reply_markup=main_menu()
     )
 
-# =====================
-# تشغيل البوت
-# =====================
-# =====================
-# الأزرار
-# =====================
-@bot.callback_query_handler(func=lambda call: True)
-def callbacks(call):
 
-    if call.data == "buy_numbers":
-
-        markup = types.InlineKeyboardMarkup(row_width=2)
-
-        markup.add(
-            types.InlineKeyboardButton("📲 تيليجرام", callback_data="telegram_numbers"),
-            types.InlineKeyboardButton("🟢 واتساب", callback_data="whatsapp_numbers")
-        )
-
-        markup.add(
-            types.InlineKeyboardButton("🔙 رجوع", callback_data="back_main")
-        )
-
-        bot.edit_message_text(
-            "🛒 شراء أرقام وهمية\n\nاختر الخدمة المطلوبة:",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            reply_markup=markup
-        )
-
-
-    elif call.data == "telegram_numbers":
-
-        markup = types.InlineKeyboardMarkup(row_width=2)
-
-        markup.add(
-            types.InlineKeyboardButton("🇪🇬 مصر - 25 ₽", callback_data="eg"),
-            types.InlineKeyboardButton("🇸🇦 السعودية - 35 ₽", callback_data="sa")
-        )
-
-        markup.add(
-            types.InlineKeyboardButton("🇺🇸 أمريكا - 30 ₽", callback_data="us"),
-            types.InlineKeyboardButton("🇬🇧 بريطانيا - 32 ₽", callback_data="uk")
-        )
-
-        markup.add(
-            types.InlineKeyboardButton("🔙 رجوع", callback_data="buy_numbers")
-        )
-
-        bot.edit_message_text(
-            "📲 شراء أرقام تيليجرام\n\nاختر الدولة:",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            reply_markup=markup
-        )
-
-
-    elif call.data == "back_main":
-
-        balance = get_balance(call.from_user.id)
-
-        bot.edit_message_text(
-            f"""👋 أهلاً بك في بوت SULTAN PRO 👑
-
-✨ نقدم لك أفضل خدمات الأرقام الوهمية والرشق.
-
-💰 رصيدك الحالي: {balance} ₽
-
-اختر الخدمة من الأزرار بالأسفل.""",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            reply_markup=main_menu()
-        )
-
-    # رجوع للرئيسية
-    elif call.data == "back_main":
-
-        balance = get_balance(call.from_user.id)
-
-        bot.edit_message_text(
-            f"""👋 أهلاً بك في بوت SULTAN PRO 👑
-
-✨ نقدم لك أفضل خدمات الأرقام الوهمية والرشق.
-
-💰 رصيدك الحالي: {balance} ₽
-
-اختر الخدمة من الأزرار بالأسفل.""",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            reply_markup=main_menu()
-)
 bot.infinity_polling()
