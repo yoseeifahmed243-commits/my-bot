@@ -86,7 +86,7 @@ def callbacks(call):
             types.InlineKeyboardButton("🟢 واتساب", callback_data="whatsapp")
         )
 
-        markup.add(
+markup.add(
             bot.edit_message_text(
     "🛒 شراء أرقام وهمية\n\nاختر الخدمة:",
     chat_id=call.message.chat.id,
