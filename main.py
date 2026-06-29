@@ -34,7 +34,6 @@ def add_user(user_id):
     )
     db.commit()
 
-
 def get_balance(user_id):
     cur.execute(
         "SELECT balance FROM users WHERE user_id=?",
@@ -47,13 +46,13 @@ def get_balance(user_id):
 
     return 0
 
-
 # ==========================
 # القائمة الرئيسية
 # ==========================
 
 def main_menu():
 
+    markup = types.InlineKeyboardMarkup(row_width=2)
 
     markup.add(
         types.InlineKeyboardButton("🛒 شراء أرقام وهمية", callback_data="numbers")
@@ -63,7 +62,7 @@ def main_menu():
         types.InlineKeyboardButton("📈 قسم الرشق", callback_data="smm")
     )
 
-    markup.addd(
+    markup.add(
         types.InlineKeyboardButton("💳 اشحن حسابك", callback_data="payment"),
         types.InlineKeyboardButton("🔗 رابط الدعوة", callback_data="ref")
     )
@@ -74,7 +73,6 @@ def main_menu():
     )
 
     return markup
-
 
 # ==========================
 # /start
@@ -96,6 +94,7 @@ def start(message):
 اختر الخدمة من القائمة.""",
         reply_markup=main_menu()
     )
+
 # ==========================
 # الأزرار
 # ==========================
@@ -103,6 +102,7 @@ def start(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callbacks(call):
 
+    # شراء الأرقام
     if call.data == "numbers":
 
         markup = types.InlineKeyboardMarkup(row_width=2)
@@ -123,6 +123,37 @@ def callbacks(call):
             reply_markup=markup
         )
 
+    # تيليجرام
+    elif call.data == "telegram":
+
+        markup = types.InlineKeyboardMarkup(row_width=2)
+
+        markup.add(
+            types.InlineKeyboardButton("🇪🇬 مصر - 20.5 ₽", callback_data="eg"),
+            types.InlineKeyboardButton("🇺🇸 أمريكا - 17 ₽", callback_data="us")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("🇸🇦 السعودية - 47.5 ₽", callback_data="sa"),
+            types.InlineKeyboardButton("🇬🇧 بريطانيا - 26 ₽", callback_data="uk")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("➡️ الصفحة 2", callback_data="telegram_page2")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
+        )
+
+        bot.edit_message_text(
+            "📲 شراء أرقام تيليجرام\n\nاختر الدولة:",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=markup
+        )
+
+    # الرجوع للرئيسية
     elif call.data == "home":
 
         balance = get_balance(call.from_user.id)
