@@ -76,3 +76,23 @@ def main_menu():
     )
 
     return markup
+# ==========================
+# /start
+# ==========================
+
+@bot.message_handler(commands=["start"])
+def start(message):
+
+    add_user(message.from_user.id)
+
+    balance = get_balance(message.from_user.id)
+
+    bot.send_message(
+        message.chat.id,
+        f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
+💰 رصيدك الحالي: {balance} ₽
+
+اختر الخدمة من القائمة.""",
+        reply_markup=main_menu()
+    )
