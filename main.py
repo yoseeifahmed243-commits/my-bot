@@ -116,7 +116,34 @@ def callbacks(call):
             types.InlineKeyboardButton("📲 تيليجرام", callback_data="telegram_numbers"),
             types.InlineKeyboardButton("🟢 واتساب", callback_data="whatsapp_numbers")
         )
+elif call.data == "telegram_numbers":
 
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("🇪🇬 مصر - 25 ₽", callback_data="eg"),
+        types.InlineKeyboardButton("🇸🇦 السعودية - 35 ₽", callback_data="sa")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇺🇸 أمريكا - 30 ₽", callback_data="us"),
+        types.InlineKeyboardButton("🇬🇧 بريطانيا - 32 ₽", callback_data="uk")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("➡️ الصفحة التالية", callback_data="telegram_page2")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="buy_numbers")
+    )
+
+    bot.edit_message_text(
+        "📲 شراء أرقام تيليجرام\n\nاختر الدولة:",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+)
         markup.add(
             types.InlineKeyboardButton("🔙 رجوع", callback_data="back_main")
         )
