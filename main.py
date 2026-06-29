@@ -107,7 +107,24 @@ def start(message):
 def callbacks(call):
 
     if call.data == "numbers":
-        bot.answer_callback_query(call.id, "🚧 سيتم إضافة قسم الأرقام")
+
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("📲 تيليجرام", callback_data="telegram"),
+        types.InlineKeyboardButton("🟢 واتساب", callback_data="whatsapp")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="home")
+    )
+
+    bot.edit_message_text(
+        "🛒 شراء أرقام وهمية\n\nاختر الخدمة:",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+    )
 
     elif call.data == "smm":
         bot.answer_callback_query(call.id, "🚧 سيتم إضافة قسم الرشق")
