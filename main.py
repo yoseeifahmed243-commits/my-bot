@@ -279,7 +279,44 @@ def callbacks(call):
         types.InlineKeyboardButton("2", callback_data="telegram_page2"),
         types.InlineKeyboardButton("3", callback_data="telegram_page3"),
         types.InlineKeyboardButton("[4]", callback_data="telegram_page4"),
-        types.InlineKeyboardButton("5", callback_data="telegram_page5"),
+        types.InlineKeyboardButton("5", page_5 = [
+    [
+        InlineKeyboardButton("🇵🇱 Poland : 23.5 ₽", callback_data="buy_Poland"),
+        InlineKeyboardButton("🇰🇪 Kenya : 21.5 ₽", callback_data="buy_Kenya"),
+    ],
+    [
+        InlineKeyboardButton("🇸🇻 El Salvador : 41.5 ₽", callback_data="buy_El_Salvador"),
+        InlineKeyboardButton("🇱🇾 Libya : 32.5 ₽", callback_data="buy_Libya"),
+    ],
+    [
+        InlineKeyboardButton("🇧🇴 Bolivia : 56 ₽", callback_data="buy_Bolivia"),
+        InlineKeyboardButton("🇫🇯 Fiji : 41.5 ₽", callback_data="buy_Fiji"),
+    ],
+    [
+        InlineKeyboardButton("🇹🇴 Tonga : 41.5 ₽", callback_data="buy_Tonga"),
+        InlineKeyboardButton("🇨🇷 Costa Rica : 32.5 ₽", callback_data="buy_Costa_Rica"),
+    ],
+    [
+        InlineKeyboardButton("🇭🇳 Honduras : 41.5 ₽", callback_data="buy_Honduras"),
+        InlineKeyboardButton("🇯🇵 Japan : 52.5 ₽", callback_data="buy_Japan"),
+    ],
+    [
+        InlineKeyboardButton("🇳🇴 Norway : 114 ₽", callback_data="buy_Norway"),
+        InlineKeyboardButton("🇩🇰 Denmark : 114 ₽", callback_data="buy_Denmark"),
+    ],
+    [
+        InlineKeyboardButton("🇨🇱 Chile : 21.5 ₽", callback_data="buy_Chile"),
+        InlineKeyboardButton("🇨🇺 Cuba : 27 ₽", callback_data="buy_Cuba"),
+    ],
+    [
+        InlineKeyboardButton("🇵🇦 Panama : 41.5 ₽", callback_data="buy_Panama"),
+        InlineKeyboardButton("🇶🇦 Qatar : 92 ₽", callback_data="buy_Qatar"),
+    ],
+    [
+        InlineKeyboardButton("🇴🇲 Oman : 56 ₽", callback_data="buy_Oman"),
+        InlineKeyboardButton("🇰🇼 Kuwait : 52.5 ₽", callback_data="buy_Kuwait"),
+    ],
+        ]
         types.InlineKeyboardButton("6", callback_data="telegram_page6"),
         types.InlineKeyboardButton("7", callback_data="telegram_page7"),
         types.InlineKeyboardButton("8", callback_data="telegram_page8"),
