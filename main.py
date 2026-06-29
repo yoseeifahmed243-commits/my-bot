@@ -425,103 +425,66 @@ elif call.data == "telegram_page6":
 markup = types.InlineKeyboardMarkup(row_width=2)
 
 markup.add(
-    types.InlineKeyboardButton("🇦🇲 Armenia : 52.5 ₽", callback_data="buy_armenia"),
-    types.InlineKeyboardButton("🇦🇴 Angola : 21.5 ₽", callback_data="buy_angola")
-)
-
-markup.add(
-    types.InlineKeyboardButton("🇹🇩 Chad : 34.5 ₽", callback_data="buy_chad"),
-    types.InlineKeyboardButton("🇩🇿 Algeria : 25 ₽", callback_data="buy_algeria")
-)
-
-markup.add(
-    types.InlineKeyboardButton("🇸🇬 Singapore : 96 ₽", callback_data="buy_singapore"),
-    types.InlineKeyboardButton("🇹🇲 Turkmenistan : 38 ₽", callback_data="buy_turkmenistan")
-)
-
-markup.add(
-    types.InlineKeyboardButton("🇩🇪 Germany : 56 ₽", callback_data="buy_germany"),
-    types.InlineKeyboardButton("🇧🇷 Brazil : 32.5 ₽", callback_data="buy_brazil")
-)
-
-markup.add(
-    types.InlineKeyboardButton("🇲🇻 Maldives : 52.5 ₽", callback_data="buy_maldives"),
-    types.InlineKeyboardButton("🇨🇿 Czech Republic : 41.5 ₽", callback_data="buy_czech")
-)
-
-markup.add(
-    types.InlineKeyboardButton("🇧🇪 Belgium : 59.5 ₽", callback_data="buy_belgium"),
-    types.InlineKeyboardButton("🇰🇮 Kiribati : 52.5 ₽", callback_data="buy_kiribati")
-)
-
-markup.add(
-    types.InlineKeyboardButton("🇩🇯 Djibouti : 34.5 ₽", callback_data="buy_djibouti"),
-    types.InlineKeyboardButton("🇦🇱
-    elif call.data == "telegram_page7":
-
+            elif call.data == "telegram_page6":
     markup = types.InlineKeyboardMarkup(row_width=2)
 
     markup.add(
-        types.InlineKeyboardButton("🇭🇹 Haiti : 41.5 ₽", callback_data="buy_haiti"),
-        types.InlineKeyboardButton("🇦🇿 Azerbaijan : 59.5 ₽", callback_data="buy_azerbaijan")
+        types.InlineKeyboardButton("🇦🇲 Armenia : 52.5 ₽", callback_data="buy_armenia"),
+        types.InlineKeyboardButton("🇦🇴 Angola : 21.5 ₽", callback_data="buy_angola")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇨🇻 Cape Verde : 41.5 ₽", callback_data="buy_capeverde"),
-        types.InlineKeyboardButton("🇸🇨 Seychelles : 41.5 ₽", callback_data="buy_seychelles")
+        types.InlineKeyboardButton("🇹🇩 Chad : 34.5 ₽", callback_data="buy_chad"),
+        types.InlineKeyboardButton("🇩🇿 Algeria : 20 ₽", callback_data="buy_algeria")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇺🇾 Uruguay : 34.5 ₽", callback_data="buy_uruguay"),
-        types.InlineKeyboardButton("🇬🇩 Grenada : 30.5 ₽", callback_data="buy_grenada")
+        types.InlineKeyboardButton("🇸🇬 Singapore : 91 ₽", callback_data="buy_singapore"),
+        types.InlineKeyboardButton("🇹🇲 Turkmenistan : 33 ₽", callback_data="buy_turkmenistan")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇨🇮 Ivory Coast : 34.5 ₽", callback_data="buy_ivorycoast"),
-        types.InlineKeyboardButton("🇻🇨 Grenadines : 30.5 ₽", callback_data="buy_grenadines")
+        types.InlineKeyboardButton("🇩🇪 Germany : 51 ₽", callback_data="buy_germany"),
+        types.InlineKeyboardButton("🇧🇷 Brazil : 27.5 ₽", callback_data="buy_brazil")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇱🇨 Lucia : 41.5 ₽", callback_data="buy_lucia"),
-        types.InlineKeyboardButton("🇸🇹 Principe : 52.5 ₽", callback_data="buy_principe")
+        types.InlineKeyboardButton("🇲🇻 Maldives : 47.5 ₽", callback_data="buy_maldives"),
+        types.InlineKeyboardButton("🇨🇿 Czech Republic : 36.5 ₽", callback_data="buy_czech")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇲🇺 Mauritius : 41.5 ₽", callback_data="buy_mauritius"),
-        types.InlineKeyboardButton("🇸🇷 Suriname : 41.5 ₽", callback_data="buy_suriname")
+        types.InlineKeyboardButton("🇧🇪 Belgium : 54.5 ₽", callback_data="buy_belgium"),
+        types.InlineKeyboardButton("🇰🇮 Kiribati : 47.5 ₽", callback_data="buy_kiribati")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇱🇸 Lesotho : 41.5 ₽", callback_data="buy_lesotho"),
-        types.InlineKeyboardButton("🇧🇼 Botswana : 29 ₽", callback_data="buy_botswana")
+        types.InlineKeyboardButton("🇩🇯 Djibouti : 29.5 ₽", callback_data="buy_djibouti"),
+        types.InlineKeyboardButton("🇦🇱 Albania : 31 ₽", callback_data="buy_albania")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇩🇲 Dominica : 34.5 ₽", callback_data="buy_dominica"),
-        types.InlineKeyboardButton("🇧🇿 Belize : 48.5 ₽", callback_data="buy_belize")
+        types.InlineKeyboardButton("🇰🇲 Comoros : 33 ₽", callback_data="buy_comoros"),
+        types.InlineKeyboardButton("🇮🇸 Iceland : 51 ₽", callback_data="buy_iceland")
     )
 
     markup.add(
-        types.InlineKeyboardButton("🇬🇦 Gabon : 36 ₽", callback_data="buy_gabon"),
-        types.InlineKeyboardButton("🇨🇬 Congo : 30.5 ₽", callback_data="buy_congo")
-)
-elif call.data == "telegram_page8":
-markup.add(
-    types.InlineKeyboardButton("🇨🇫 Central Africa : 23.5 ₽", callback_data="buy_central_africa"),
-    types.InlineKeyboardButton("🇱🇹 Lithuania : 70.5 ₽", callback_data="buy_lithuania")
-)
+        types.InlineKeyboardButton("🇪🇨 Ecuador : 33 ₽", callback_data="buy_ecuador"),
+        types.InlineKeyboardButton("🇯🇲 Jamaica : 29.5 ₽", callback_data="buy_jamaica")
+    )
 
-markup.add(
-    types.InlineKeyboardButton("🇬🇷 Greece : 48.5 ₽", callback_data="buy_greece"),
-    types.InlineKeyboardButton("🇲🇷 Mauritania : 34.5 ₽", callback_data="buy_mauritania")
-)
+    markup.add(
+        types.InlineKeyboardButton("⬅️ السابق", callback_data="telegram_page5"),
+        types.InlineKeyboardButton("➡️ التالي", callback_data="telegram_page7")
+    )
 
-markup.add(
-    types.InlineKeyboardButton("🇬🇺 Guam : 30.5 ₽", callback_data="buy_guam"),
-    types.InlineKeyboardButton("🇸🇸 South Sudan : 38 ₽", callback_data="buy_south_sudan")
-)
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="telegram")
+    )
 
-markup.add(
-    types.InlineKeyboardButton("🇲🇬 Madagascar : 27 ₽", callback_data="buy_madagascar"),
-    types.InlineKeyboardButton("🇧🇸 Bahamas : 41.5 ₽", callback_data="buy_bahamas")
-)
+    bot.edit_message_text(
+        "اختر الدولة:",
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup
+    )
