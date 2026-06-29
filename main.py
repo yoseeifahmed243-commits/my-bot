@@ -168,7 +168,88 @@ def callbacks(call):
     )
 
     markup.add(
-        types.InlineKeyboardButton("➡️ الصفحة 2", callback_data="telegram_page2")
+        types.InlineKeyboardButton("➡️ الصفحة 2", elif call.data == "telegram_page2":
+
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("🇮🇳 الهند | 15 ₽", callback_data="tg_in"),
+        types.InlineKeyboardButton("🇵🇰 باكستان | 15 ₽", callback_data="tg_pk")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇧🇩 بنغلاديش | 15 ₽", callback_data="tg_bd"),
+        types.InlineKeyboardButton("🇳🇵 نيبال | 15 ₽", callback_data="tg_np")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇱🇰 سريلانكا | 15 ₽", callback_data="tg_lk"),
+        types.InlineKeyboardButton("🇨🇳 الصين | 20 ₽", callback_data="tg_cn")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇯🇵 اليابان | 25 ₽", callback_data="tg_jp"),
+        types.InlineKeyboardButton("🇰🇷 كوريا الجنوبية | 25 ₽", callback_data="tg_kr")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("⬅️ الصفحة 1", callback_data="telegram"),
+        types.InlineKeyboardButton("➡️ الصفحة 3", elif call.data == "telegram_page3":
+
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("🇪🇬 مصر | 25.5 ₽", callback_data="tg_eg"),
+        types.InlineKeyboardButton("🇸🇦 السعودية | 52.5 ₽", callback_data="tg_sa")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇦🇪 الإمارات | 34.5 ₽", callback_data="tg_ae"),
+        types.InlineKeyboardButton("🇶🇦 قطر | 36 ₽", callback_data="tg_qa")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇰🇼 الكويت | 30.5 ₽", callback_data="tg_kw"),
+        types.InlineKeyboardButton("🇧🇭 البحرين | 29 ₽", callback_data="tg_bh")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇴🇲 عمان | 31 ₽", callback_data="tg_om"),
+        types.InlineKeyboardButton("🇯🇴 الأردن | 25 ₽", callback_data="tg_jo")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇮🇶 العراق | 15 ₽", callback_data="tg_iq"),
+        types.InlineKeyboardButton("🇱🇧 لبنان | 20 ₽", callback_data="tg_lb")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("⬅️ الصفحة 2", callback_data="telegram_page2"),
+        types.InlineKeyboardButton("➡️ الصفحة 4", callback_data="telegram_page4")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
+    )
+
+    bot.edit_message_text(
+        "📲 شراء أرقام تيليجرام\n\nالصفحة الثالثة:",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+    )
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
+    )
+
+    bot.edit_message_text(
+        "📲 شراء أرقام تيليجرام\n\nالصفحة الثانية:",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+    )
     )
 
     markup.add(
