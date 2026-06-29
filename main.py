@@ -87,21 +87,20 @@ def callbacks(call):
         )
 
         markup.add(
-            types.InlineKeyboardButton("🔙 رجوع", callback_data="home")
-        )
-
-        bot.edit_message_text(
-            "🛒 شراء أرقام وهمية\n\nاختر الخدمة:",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            reply_markup=markup
+            bot.edit_message_text(
+    "🛒 شراء أرقام وهمية\n\nاختر الخدمة:",
+    chat_id=call.message.chat.id,
+    message_id=call.message.message_id,
+    reply_markup=markup
 )
-        elif call.data == "home":
 
-        balance = get_balance(call.from_user.id)
+elif call.data == "home":
 
-        bot.edit_message_text(
-            f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+    balance = get_balance(call.from_user.id)
+
+    bot.edit_message_text(
+        f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
 
 💰 رصيدك الحالي: {balance} ₽
 
