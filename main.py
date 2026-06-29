@@ -63,7 +63,34 @@ def main_menu():
     markup.add(
         types.InlineKeyboardButton("📈 قسم الرشق", callback_data="smm")
     )
+elif call.data == "telegram":
 
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("🇪🇬 مصر - 20.5 ₽", callback_data="eg"),
+        types.InlineKeyboardButton("🇺🇸 أمريكا - 17 ₽", callback_data="us")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇸🇦 السعودية - 47.5 ₽", callback_data="sa"),
+        types.InlineKeyboardButton("🇬🇧 بريطانيا - 26 ₽", callback_data="uk")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("➡️ الصفحة 2", callback_data="telegram_page2")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
+    )
+
+    bot.edit_message_text(
+        "📲 شراء أرقام تيليجرام\n\nاختر الدولة:",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+)
     markup.add(
         types.InlineKeyboardButton("💳 اشحن حسابك", callback_data="payment"),
         types.InlineKeyboardButton("🔗 رابط الدعوة", callback_data="ref")
