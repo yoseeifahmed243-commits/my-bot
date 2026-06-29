@@ -2,7 +2,7 @@ import telebot
 from telebot import types
 import sqlite3
 
-TOKEN = "8788796273:AAHEarmEVW_kemB5kBTFwi9bqARewAyf3DM""
+TOKEN = "8788796273:AAHEarmEVW_kemB5kBTFwi9bqARewAyf3DM"
 ADMIN_ID = 8767607098
 
 bot = telebot.TeleBot(TOKEN)
