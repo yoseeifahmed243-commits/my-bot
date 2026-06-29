@@ -152,7 +152,31 @@ def callbacks(call):
             message_id=call.message.message_id,
             reply_markup=markup
         )
+    # واتساب
+    elif call.data == "whatsapp":
 
+        markup = types.InlineKeyboardMarkup(row_width=2)
+
+        markup.add(
+            types.InlineKeyboardButton("🇪🇬 مصر - 24.5 ₽", callback_data="wa_eg"),
+            types.InlineKeyboardButton("🇺🇸 أمريكا - 21 ₽", callback_data="wa_us")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("🇸🇦 السعودية - 51.5 ₽", callback_data="wa_sa"),
+            types.InlineKeyboardButton("🇬🇧 بريطانيا - 30 ₽", callback_data="wa_uk")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
+        )
+
+        bot.edit_message_text(
+            "🟢 شراء أرقام واتساب\n\nاختر الدولة:",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=markup
+        )
     # الرجوع للرئيسية
     elif call.data == "home":
 
