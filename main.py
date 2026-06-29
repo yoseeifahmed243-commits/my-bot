@@ -187,7 +187,24 @@ def start(message):
 def callbacks(call):
 
     if call.data == "numbers":
+    bot.send_message(
+        call.message.chat.id,
+        "اختر الدولة",
+    )
+
 elif call.data == "home":
+    balance = get_balance(call.from_user.id)
+
+    bot.edit_message_text(
+        f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
+💰 رصيدك الحالي: {balance} ₽
+
+اختر الخدمة من القائمة.""",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=main_menu()
+    )
 
     balance = get_balance(call.from_user.id)
 
