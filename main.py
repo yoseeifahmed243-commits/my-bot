@@ -49,3 +49,30 @@ def get_balance(user_id):
         return row[0]
 
     return 0
+# ==========================
+# القائمة الرئيسية
+# ==========================
+
+def main_menu():
+
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("🛒 شراء أرقام وهمية", callback_data="numbers")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("📈 قسم الرشق", callback_data="smm")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("💳 اشحن حسابك", callback_data="payment"),
+        types.InlineKeyboardButton("🔗 رابط الدعوة", callback_data="ref")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("⚙️ الإعدادات", callback_data="settings"),
+        types.InlineKeyboardButton("🛠 الدعم الفني", callback_data="support")
+    )
+
+    return markup
