@@ -50,28 +50,26 @@ def get_balance(user_id):
 # =====================
 # القائمة الرئيسية
 # =====================
-
 def main_menu():
 
     markup = types.InlineKeyboardMarkup(row_width=2)
 
     markup.add(
-        types.InlineKeyboardButton("📲 أرقام تيليجرام", callback_data="telegram_numbers"),
-        types.InlineKeyboardButton("💬 أرقام واتساب", callback_data="whatsapp_numbers")
+        types.InlineKeyboardButton("🛒 شراء أرقام وهمية", callback_data="buy_numbers"),
+        types.InlineKeyboardButton("📈 قسم الرشق", callback_data="smm")
     )
 
     markup.add(
-        types.InlineKeyboardButton("📈 خدمات الرشق", callback_data="reshaq")
+        types.InlineKeyboardButton("💳 اشحن حسابك", callback_data="payment"),
+        types.InlineKeyboardButton("🔗 رابط الدعوة", callback_data="referral")
     )
 
     markup.add(
-        types.InlineKeyboardButton("💳 شحن الرصيد", callback_data="payment")
+        types.InlineKeyboardButton("⚙️ الإعدادات", callback_data="settings"),
+        types.InlineKeyboardButton("🛠 الدعم الفني", callback_data="support")
     )
 
-    markup.add(
-        types.InlineKeyboardButton("🎁 الإحالة", callback_data="referral"),
-        types.InlineKeyboardButton("🎧 الدعم", callback_data="support")
-    )
+    return markup
 
     return markup
 
@@ -79,6 +77,7 @@ def main_menu():
 # ستارت
 # =====================
 
+@bot.message_handler(commands=['start'])
 @bot.message_handler(commands=['start'])
 def start(message):
 
@@ -88,12 +87,62 @@ def start(message):
 
     bot.send_message(
         message.chat.id,
-        f"✨ مرحباً بك في البوت\n\n💰 رصيدك: {balance} ₽",
+        f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
+✨ نقدم لك أفضل خدمات الأرقام الوهمية والرشق.
+
+💰 رصيدك الحالي: {balance} ₽
+
+اختر الخدمة من الأزرار بالأسفل.""",
         reply_markup=main_menu()
     )
 
 # =====================
 # تشغيل البوت
 # =====================
+# =====================
+# الأزرار
+# =====================
 
+@bot.callback_query_handler(func=lambda call: True)
+def callbacks(call):
+
+    # شراء أرقام وهمية
+    if call.data == "buy_numbers":
+
+        markup = types.InlineKeyboardMarkup(row_width=2)
+
+        markup.add(
+            types.InlineKeyboardButton("📲 تيليجرام", callback_data="telegram_numbers"),
+            types.InlineKeyboardButton("🟢 واتساب", callback_data="whatsapp_numbers")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("🔙 رجوع", callback_data="back_main")
+        )
+
+        bot.edit_message_text(
+            "🛒 شراء أرقام وهمية\n\nاختر الخدمة المطلوبة:",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=markup
+        )
+
+    # رجوع للرئيسية
+    elif call.data == "back_main":
+
+        balance = get_balance(call.from_user.id)
+
+        bot.edit_message_text(
+            f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
+✨ نقدم لك أفضل خدمات الأرقام الوهمية والرشق.
+
+💰 رصيدك الحالي: {balance} ₽
+
+اختر الخدمة من الأزرار بالأسفل.""",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=main_menu()
+)
 bot.infinity_polling()
