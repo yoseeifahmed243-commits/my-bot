@@ -97,6 +97,46 @@ def start(message):
 اختر الخدمة من القائمة.""",
         reply_markup=main_menu()
     )
+# ==========================
+# الأزرار
+# ==========================
 
+@bot.callback_query_handler(func=lambda call: True)
+def callbacks(call):
+
+    if call.data == "numbers":
+
+        markup = types.InlineKeyboardMarkup(row_width=2)
+
+        markup.add(
+            types.InlineKeyboardButton("📲 تيليجرام", callback_data="telegram"),
+            types.InlineKeyboardButton("🟢 واتساب", callback_data="whatsapp")
+        )
+
+        markup.add(
+            types.InlineKeyboardButton("🔙 رجوع", callback_data="home")
+        )
+
+        bot.edit_message_text(
+            "🛒 شراء أرقام وهمية\n\nاختر الخدمة:",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=markup
+        )
+
+    elif call.data == "home":
+
+        balance = get_balance(call.from_user.id)
+
+        bot.edit_message_text(
+            f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
+💰 رصيدك الحالي: {balance} ₽
+
+اختر الخدمة من القائمة.""",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=main_menu()
+        )
 
 bot.infinity_polling()
