@@ -422,11 +422,70 @@ markup.add(
 markup.add(
     types.InlineKeyboardButton("
 elif call.data == "telegram_page6":
-markup = types.InlineKeyboardMarkup(row_width=2)
-
-markup.add(
-            elif call.data == "telegram_page6":
     markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("🇦🇲 Armenia : 52.5 ₽", callback_data="buy_armenia"),
+        types.InlineKeyboardButton("🇦🇴 Angola : 21.5 ₽", callback_data="buy_angola")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇹🇩 Chad : 34.5 ₽", callback_data="buy_chad"),
+        types.InlineKeyboardButton("🇩🇿 Algeria : 25 ₽", callback_data="buy_algeria")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇸🇬 Singapore : 96 ₽", callback_data="buy_singapore"),
+        types.InlineKeyboardButton("🇹🇲 Turkmenistan : 38 ₽", callback_data="buy_turkmenistan")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇩🇪 Germany : 56 ₽", callback_data="buy_germany"),
+        types.InlineKeyboardButton("🇧🇷 Brazil : 32.5 ₽", callback_data="buy_brazil")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇲🇻 Maldives : 52.5 ₽", callback_data="buy_maldives"),
+        types.InlineKeyboardButton("🇨🇿 Czech Republic : 41.5 ₽", callback_data="buy_czech")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇧🇪 Belgium : 59.5 ₽", callback_data="buy_belgium"),
+        types.InlineKeyboardButton("🇰🇮 Kiribati : 52.5 ₽", callback_data="buy_kiribati")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇩🇯 Djibouti : 34.5 ₽", callback_data="buy_djibouti"),
+        types.InlineKeyboardButton("🇦🇱 Albania : 36 ₽", callback_data="buy_albania")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇰🇲 Comoros : 38 ₽", callback_data="buy_comoros"),
+        types.InlineKeyboardButton("🇮🇸 Iceland : 56 ₽", callback_data="buy_iceland")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇪🇨 Ecuador : 38 ₽", callback_data="buy_ecuador"),
+        types.InlineKeyboardButton("🇯🇲 Jamaica : 34.5 ₽", callback_data="buy_jamaica")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("⬅️ السابق", callback_data="telegram_page5"),
+        types.InlineKeyboardButton("➡️ التالي", callback_data="telegram_page7")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="buy_telegram")
+    )
+
+    bot.edit_message_text(
+        "اختر الدولة:",
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup
+    )
+
+markup = types.InlineKeyboardMarkup(row_width=2)
 
     markup.add(
         types.InlineKeyboardButton("🇦🇲 Armenia : 52.5 ₽", callback_data="buy_armenia"),
