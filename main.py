@@ -54,7 +54,6 @@ def get_balance(user_id):
 
 def main_menu():
 
-    markup = types.InlineKeyboardMarkup(row_width=2)
 
     markup.add(
         types.InlineKeyboardButton("🛒 شراء أرقام وهمية", callback_data="numbers")
