@@ -139,7 +139,48 @@ def callbacks(call):
         )
 
     elif call.data == "telegram":
-        bot.answer_callback_query(call.id, "📲 سيتم إضافة قائمة تيليجرام")
+
+    markup = types.InlineKeyboardMarkup(row_width=2)
+
+    markup.add(
+        types.InlineKeyboardButton("🇷🇺 روسيا | 13 ₽", callback_data="tg_ru"),
+        types.InlineKeyboardButton("🎲 عشوائي | 15 ₽", callback_data="tg_random")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇵🇭 الفلبين | 15 ₽", callback_data="tg_ph"),
+        types.InlineKeyboardButton("🇻🇳 فيتنام | 15 ₽", callback_data="tg_vn")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇮🇩 إندونيسيا | 15 ₽", callback_data="tg_id"),
+        types.InlineKeyboardButton("🇲🇾 ماليزيا | 15 ₽", callback_data="tg_my")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇹🇭 تايلاند | 15 ₽", callback_data="tg_th"),
+        types.InlineKeyboardButton("🇰🇿 كازاخستان | 16 ₽", callback_data="tg_kz")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🇪🇪 إستونيا | 15 ₽", callback_data="tg_ee"),
+        types.InlineKeyboardButton("🇬🇧 بريطانيا | 31 ₽", callback_data="tg_uk")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("➡️ الصفحة 2", callback_data="telegram_page2")
+    )
+
+    markup.add(
+        types.InlineKeyboardButton("🔙 رجوع", callback_data="numbers")
+    )
+
+    bot.edit_message_text(
+        "📲 شراء أرقام تيليجرام\n\nاختر الدولة:",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+    )
 
     elif call.data == "whatsapp":
         bot.answer_callback_query(call.id, "🟢 سيتم إضافة قائمة واتساب")
