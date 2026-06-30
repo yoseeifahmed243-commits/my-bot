@@ -96,8 +96,24 @@ def start(message):
 
     bot.send_message(
         message.chat.id,
-        f"""👋 أهلاً بك في بوت SULTAN PRO
-    telegram_pages = [
+  @bot.message_handler(commands=["start"])
+def start(message):
+    add_user(message.from_user.id)
+
+    balance = get_balance(message.from_user.id)
+
+    bot.send_message(
+        message.chat.id,
+        f"""👋 أهلاً بك في بوت SULTAN PRO 👑
+
+✨ نقدم لك أفضل خدمات الأرقام الوهمية والرشق.
+
+💰 رصيدك الحالي: {balance} ₽
+
+اختر الخدمة من الأزرار بالأسفل.""",
+        reply_markup=main_menu()
+            )      
+telegram_pages = [
     telegram_page1,
     telegram_page2,
     telegram_page3,
@@ -107,7 +123,6 @@ def start(message):
     telegram_page7,
     telegram_page8,
 ]
-
 def show_telegram_page(chat_id, page):
     markup = types.InlineKeyboardMarkup(row_width=2)
 
